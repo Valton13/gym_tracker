@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+
+{% block title %}Exercise Upload - FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-4 gradient-text">Exercise Upload</h1>
+            <p class="text-lg text-base-content/70">Upload your exercise video for form analysis</p>
+        </div>
+
+        <!-- Exercise Categories -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Upper Body -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-xl mb-4">
+                        <i class="fas fa-dumbbell text-primary mr-2"></i>
+                        Upper Body
+                    </h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('shoulder_press')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Shoulder Press
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('bicep_curl')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Bicep Curls
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('pushup')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Push-ups
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lower Body -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-xl mb-4">
+                        <i class="fas fa-running text-primary mr-2"></i>
+                        Lower Body
+                    </h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('squat')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Squats
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('deadlift')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Deadlift
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('lunge')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Lunges
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Core -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-xl mb-4">
+                        <i class="fas fa-dumbbell text-primary mr-2"></i>
+                        Core
+                    </h2>
+                    <ul class="space-y-2">
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('plank')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Plank
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('crunches')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Crunches
+                            </button>
+                        </li>
+                        <li>
+                            <button class="btn btn-ghost w-full justify-start" onclick="selectExercise('russian_twist')">
+                                <i class="fas fa-chevron-right mr-2"></i>
+                                Russian Twists
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" class="space-y-6" id="uploadForm">
+                    <!-- Exercise Type Selection -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg font-semibold">Selected Exercise</span>
+                        </label>
+                        <select name="exercise_type" id="exerciseSelect" class="select select-bordered w-full" required>
+                            <option value="" disabled selected>Select an exercise</option>
+                            <option value="squat">Squat</option>
+                            <option value="deadlift">Deadlift</option>
+                            <option value="pushup">Push-up</option>
+                            <option value="pullup">Pull-up</option>
+                            <option value="shoulder_press">Shoulder Press</option>
+                            <option value="bicep_curl">Bicep Curl</option>
+                            <option value="plank">Plank</option>
+                            <option value="crunches">Crunches</option>
+                            <option value="lunge">Lunges</option>
+                            <option value="russian_twist">Russian Twists</option>
+                        </select>
+                    </div>
+
+                    <!-- Video Upload -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg font-semibold">Video File</span>
+                        </label>
+                        <input type="file" name="video" class="file-input file-input-bordered w-full" accept=".mp4,.mov,.avi" required>
+                        <label class="label">
+                            <span class="label-text-alt">Supported formats: MP4, MOV, AVI (Max size: 100MB)</span>
+                        </label>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg font-semibold">Notes (Optional)</span>
+                        </label>
+                        <textarea name="notes" class="textarea textarea-bordered h-24" placeholder="Add any notes about your exercise..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-control mt-6">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-upload mr-2"></i>
+                            Upload and Analyze
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Back Button -->
+                <div class="text-center mt-6">
+                    <a href="{{ url_for('exercises') }}" class="btn btn-ghost">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Exercises
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Guidelines -->
+        <div class="card bg-base-200 shadow-xl mt-8">
+            <div class="card-body">
+                <h2 class="card-title text-xl mb-4">
+                    <i class="fas fa-info-circle text-primary mr-2"></i>
+                    Upload Guidelines
+                </h2>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
+                        <span>Ensure good lighting and clear view of the exercise</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
+                        <span>Record from a side angle for best form analysis</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
+                        <span>Include the full range of motion in the video</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-success mt-1 mr-2"></i>
+                        <span>Keep the video under 100MB</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Your Analyzed Videos Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6 text-center">
+                <i class="fas fa-video text-primary mr-2"></i>
+                Your Analyzed Videos
+            </h2>
+            
+            {% if analyzed_videos %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for video in analyzed_videos %}
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <!-- Video Player with Feedback -->
+                        <div class="relative video-container mb-4">
+                            <video class="w-full rounded-lg" controls>
+                                <source src="{{ url_for('download_analyzed_video', upload_id=video.id) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="feedback-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-white hidden">
+                                <div class="feedback-content text-xl font-semibold text-center px-4 py-2 bg-black bg-opacity-50 rounded-lg shadow-lg transform -translate-y-8">
+                                    <div class="feedback-text"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Details -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">{{ video.exercise_type.replace('_', ' ').title() }}</h3>
+                                <p class="text-sm text-base-content/70">Uploaded: {{ video.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                            </div>
+                            
+                            {% if video.notes %}
+                            <div class="bg-base-200 p-3 rounded-lg">
+                                <h4 class="text-sm font-semibold mb-1">Your Notes:</h4>
+                                <p class="text-sm text-base-content/80">{{ video.notes }}</p>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="bg-primary/10 p-3 rounded-lg">
+                                <h4 class="text-sm font-semibold mb-1">Form Analysis:</h4>
+                                <p class="text-sm text-base-content/80">{{ video.feedback }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="card-actions justify-end mt-4 space-x-2">
+                            <a href="{{ url_for('download_analyzed_video', upload_id=video.id) }}" 
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-download mr-2"></i>
+                                Download
+                            </a>
+                            <form action="{{ url_for('delete_analyzed_video', upload_id=video.id) }}" 
+                                  method="POST" 
+                                  class="inline-block"
+                                  onsubmit="return confirm('Are you sure you want to delete this video? This action cannot be undone.');">
+                                <button type="submit" class="btn btn-error btn-sm">
+                                    <i class="fas fa-trash mr-2"></i>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-base-content/70">No analyzed videos yet. Upload a video to get started!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    }
+
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .feedback-overlay {
+        position: absolute;
+        z-index: 9999;
+    }
+
+    .feedback-content {
+        font-size: 1.5rem;
+        padding: 1rem 2rem;
+    }
+</style>
+
+<script>
+function selectExercise(exerciseType) {
+    const select = document.getElementById('exerciseSelect');
+    select.value = exerciseType;
+    select.classList.add('select-primary');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const videos = document.querySelectorAll('.video-container video');
+    
+    videos.forEach(video => {
+        const feedbackOverlay = video.parentElement.querySelector('.feedback-overlay');
+        const feedbackText = feedbackOverlay.querySelector('.feedback-text');
+        const exerciseType = video.closest('.card').querySelector('h3').textContent.toLowerCase().replace(' ', '_');
+        
+        // Feedback messages based on exercise type
+        const feedbackMessages = {
+            squat: [
+                "Keep your back straight",
+                "Knees aligned with toes",
+                "Lower until thighs are parallel",
+                "Push through heels"
+            ],
+            deadlift: [
+                "Maintain neutral spine",
+                "Keep bar close to body",
+                "Engage core",
+                "Drive through heels"
+            ],
+            pushup: [
+                "Elbows close to body",
+                "Keep body straight",
+                "Lower chest to ground",
+                "Push through chest"
+            ],
+            shoulder_press: [
+                "Keep core engaged",
+                "Wrists straight",
+                "Press overhead",
+                "Control descent"
+            ],
+            bicep_curl: [
+                "Keep elbows stationary",
+                "Full range of motion",
+                "Control weight",
+                "Squeeze at top"
+            ],
+            plank: [
+                "Keep body straight",
+                "Engage core",
+                "Hold position",
+                "Maintain form"
+            ],
+            crunches: [
+                "Keep lower back pressed to ground",
+                "Engage core",
+                "Control movement",
+                "Full range of motion"
+            ],
+            lunge: [
+                "Keep torso upright",
+                "Knee aligned with ankle",
+                "Back knee nearly touching ground",
+                "Push through front heel"
+            ],
+            russian_twist: [
+                "Keep feet off ground",
+                "Rotate from core",
+                "Control movement",
+                "Keep back straight"
+            ]
+        };
+
+        // Update feedback based on video time
+        video.addEventListener('timeupdate', function() {
+            const currentTime = video.currentTime;
+            const duration = video.duration;
+            const messages = feedbackMessages[exerciseType] || [];
+            
+            if (messages.length > 0) {
+                const index = Math.floor((currentTime / duration) * messages.length);
+                if (index < messages.length) {
+                    feedbackText.textContent = messages[index];
+                    feedbackOverlay.classList.remove('hidden');
+                } else {
+                    feedbackOverlay.classList.add('hidden');
+                }
+            }
+        });
+
+        // Show/hide feedback on play/pause
+        video.addEventListener('play', function() {
+            feedbackOverlay.classList.remove('hidden');
+        });
+
+        video.addEventListener('pause', function() {
+            feedbackOverlay.classList.add('hidden');
+        });
+    });
+});
+</script>
+{% endblock %} 

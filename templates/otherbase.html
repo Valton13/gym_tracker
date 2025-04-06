@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="lemonade">
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>...</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+</head>
+<body>
+<div class="navbar bg-base-100">
+    <div class="flex-1">
+    <div class="form-control">
+        <div class="flex-1">
+        <div class="form-control">
+            <label for="learn-popup" class="btn btn-primary ml-2 w-full md:w-64">Learn</label>
+        </div>
+
+        <input type="checkbox" id="learn-popup" class="modal-toggle" />
+        <dialog id="learn-dialog" class="modal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Select Exercise to Learn</h3>
+                <p class="py-4">Please choose an exercise to watch the video:</p>
+                <div class="modal-action flex flex-wrap justify-between gap-2">
+                    <a href="{{ url_for('exercises', exercise='shoulder_press') }}" class="btn w-full sm:w-auto">Shoulder Press</a>
+                    <a href="{{ url_for('exercises', exercise='dumbbell_curls') }}" class="btn w-full sm:w-auto">Dumbbell Curls</a>
+                    <a href="{{ url_for('exercises', exercise='barbell_squats') }}" class="btn w-full sm:w-auto">Barbell Squats</a>
+                    <a href="{{ url_for('exercises', exercise='deadlift') }}" class="btn w-full sm:w-auto">Deadlifts</a>
+                    <a href="{{ url_for('exercises', exercise='lateral_raises') }}" class="btn w-full sm:w-auto">Lateral Raises</a>
+                    <label for="learn-popup" class="btn w-full sm:w-auto">Cancel</label>
+                </div>
+            </div>
+        </dialog>
+    </div>
+    </div>
+</div>
+
+
+    <div class="flex-1 flex justify-left">
+        <a href="mainboard" class="btn btn-ghost text-xl">Home</a>
+    </div>
+
+    <div class="flex-none">
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full">
+                    <img
+                        alt="Avatar"
+                        src="https://cdn3.emoji.gg/emojis/4601_github.png"
+                    />
+                </div>
+            </div>
+            <ul
+                tabindex="0"
+                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
+                <li>
+                   <a href='profile' class="justify-between">
+                        Profile
+                        <span class="badge">New</span>
+                    </a>
+                </li>
+
+                <li><a>Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

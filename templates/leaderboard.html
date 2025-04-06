@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 gradient-text">Fitness Leaderboard</h1>
+            <p class="text-lg text-base-content/70">Compete with other fitness enthusiasts and track your progress</p>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="flex justify-center mb-8">
+            <form method="POST" class="join">
+                <button type="submit" name="view" value="total_exercises" 
+                        class="btn join-item {{ 'btn-primary' if view == 'total_exercises' else 'btn-ghost' }}">
+                    <i class="fas fa-dumbbell mr-2"></i>
+                    Total Exercises
+                </button>
+                <button type="submit" name="view" value="total_reps" 
+                        class="btn join-item {{ 'btn-primary' if view == 'total_reps' else 'btn-ghost' }}">
+                    <i class="fas fa-fire mr-2"></i>
+                    Total Reps
+                </button>
+            </form>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="card bg-base-100 shadow-xl overflow-hidden">
+            <div class="card-body p-0">
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra">
+                    <thead>
+                            <tr class="bg-base-200">
+                                <th class="text-center">Rank</th>
+                                <th>User</th>
+                                <th class="text-right">
+                                {% if view == 'total_exercises' %}
+                                        Exercises
+                                {% else %}
+                                        Reps
+                                {% endif %}
+                                </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in leaderboard_data %}
+                            <tr class="hover:bg-base-200 transition-colors">
+                                <td class="text-center">
+                                    {% if loop.index == 1 %}
+                                        <div class="text-2xl text-warning" title="Gold">🥇</div>
+                                    {% elif loop.index == 2 %}
+                                        <div class="text-2xl text-base-content/70" title="Silver">🥈</div>
+                                    {% elif loop.index == 3 %}
+                                        <div class="text-2xl text-amber-600" title="Bronze">🥉</div>
+                                    {% else %}
+                                        {{ loop.index }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="avatar placeholder">
+                                            <div class="bg-neutral text-neutral-content rounded-full w-8">
+                                                <span>{{ user.username[0]|upper }}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold">{{ user.username }}</div>
+                                            {% if loop.index <= 3 %}
+                                                <div class="text-sm opacity-50">Top Performer</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <div class="font-mono">
+                                {% if view == 'total_exercises' %}
+                                    {{ user.exercise_count }}
+                                {% else %}
+                                    {{ user.total_reps }}
+                                {% endif %}
+                                    </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+
+        <!-- Motivational Section -->
+        <div class="mt-12 text-center">
+            <div class="stats shadow inline-grid grid-cols-1 md:grid-cols-3">
+                <div class="stat">
+                    <div class="stat-figure text-primary">
+                        <i class="fas fa-medal text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Your Rank</div>
+                    <div class="stat-value">
+                        {% set user_rank = namespace(found=false, value=0) %}
+                        {% for user in leaderboard_data %}
+                            {% if user.username == session['username'] %}
+                                {% set user_rank.found = true %}
+                                {% set user_rank.value = loop.index %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ user_rank.value if user_rank.found else 'N/A' }}
+                    </div>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-figure text-secondary">
+                        <i class="fas fa-trophy text-3xl"></i>
+                    </div>
+                    <div class="stat-title">To Next Rank</div>
+                    <div class="stat-value">
+                        {% if user_rank.found and user_rank.value > 1 %}
+                            {% set next_user = leaderboard_data[user_rank.value - 2] %}
+                            {% if view == 'total_exercises' %}
+                                {{ next_user.exercise_count - leaderboard_data[user_rank.value - 1].exercise_count }}
+                            {% else %}
+                                {{ next_user.total_reps - leaderboard_data[user_rank.value - 1].total_reps }}
+                            {% endif %}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-figure text-accent">
+                        <i class="fas fa-users text-3xl"></i>
+                    </div>
+                    <div class="stat-title">Total Users</div>
+                    <div class="stat-value">{{ leaderboard_data|length }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

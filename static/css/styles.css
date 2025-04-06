@@ -1,0 +1,31 @@
+/*
+Error: Invalid CSS after "  }": expected selector or at-rule, was "}"
+        on line 15 of /home/kxt333/jimbro/project_draft/static/scss/styles.scss
+
+10:   $breakpoint-sm: map};
+11: 
+12:   > main {
+13:     max-width: $breakpoint-sm; // Use the variable directly
+14:   }
+15: }
+
+Backtrace:
+/home/kxt333/jimbro/project_draft/static/scss/styles.scss:15
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/scss/parser.rb:1308:in `expected'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/scss/parser.rb:1238:in `expected'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/scss/parser.rb:42:in `parse'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/engine.rb:414:in `_to_tree'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/engine.rb:307:in `render_with_sourcemap'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:383:in `run'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:63:in `process_result'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/exec/base.rb:50:in `parse'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/lib/sass/exec/base.rb:18:in `parse!'
+/usr/share/rubygems-integration/all/gems/sass-3.7.4/bin/sass:8:in `<top (required)>'
+/usr/bin/sass:25:in `load'
+/usr/bin/sass:25:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"  }\": expected selector or at-rule, was \"}\"\A         on line 15 of /home/kxt333/jimbro/project_draft/static/scss/styles.scss\A \A 10:   $breakpoint-sm: map};\A 11: \A 12:   > main {\A 13:     max-width: $breakpoint-sm; // Use the variable directly\A 14:   }\A 15: }"; }

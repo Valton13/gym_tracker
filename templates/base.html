@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="winter" class="bg-base-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FitTrack Pro{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #3B82F6, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-gradient {
+            background: linear-gradient(90deg, #3B82F6 0%, #10B981 100%);
+        }
+        .card-hover {
+            transition: transform 0.2s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-base-200">
+    <!-- Navbar -->
+    <div class="navbar nav-gradient text-white shadow-lg">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </label>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="{{ url_for('mainboard') }}" class="text-primary hover:bg-primary/10">Dashboard</a></li>
+                    <li><a href="{{ url_for('exercises') }}" class="text-primary hover:bg-primary/10">Exercises</a></li>
+                    <li><a href="{{ url_for('upload_exercise') }}" class="text-primary hover:bg-primary/10">Upload Exercise</a></li>
+                    <li><a href="{{ url_for('leaderboard') }}" class="text-primary hover:bg-primary/10">Leaderboard</a></li>
+                    <li><a href="{{ url_for('profile') }}" class="text-primary hover:bg-primary/10">Profile</a></li>
+                </ul>
+            </div>
+            <a href="{{ url_for('mainboard') }}" class="btn btn-ghost normal-case text-xl">FitTrack Pro</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="{{ url_for('mainboard') }}" class="hover:text-primary-content hover:bg-primary/10">Dashboard</a></li>
+                <li><a href="{{ url_for('exercises') }}" class="hover:text-primary-content hover:bg-primary/10">Exercises</a></li>
+                <li><a href="{{ url_for('upload_exercise') }}" class="hover:text-primary-content hover:bg-primary/10">Upload Exercise</a></li>
+                <li><a href="{{ url_for('leaderboard') }}" class="hover:text-primary-content hover:bg-primary/10">Leaderboard</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            {% if 'user_id' in session %}
+                <div class="dropdown dropdown-end">
+                    <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full bg-primary/20">
+                            <i class="fas fa-user text-xl text-primary"></i>
+                        </div>
+                    </label>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="{{ url_for('profile') }}" class="text-primary hover:bg-primary/10">Profile</a></li>
+                        <li><a href="{{ url_for('logout') }}" class="text-error hover:bg-error/10">Logout</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-primary hover:bg-primary-focus">Login</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} shadow-lg mb-4">
+                        <div>
+                            {% if category == 'success' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {% elif category == 'error' or category == 'danger' %}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {% endif %}
+                            <span>{{ message }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <div>
+            <p>Copyright © 2024 - All rights reserved by FitTrack Pro</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+{% extends 'instructions_base.html' %}
+<meta http-equiv="refresh" content="5;url={{ url_for('start_page', exercise=exercise) }}">
+{% block content %}
+
+    <div class="container mx-auto mt-5 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <div class="stat bg-secondary p-8 shadow-lg rounded-lg" style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="stat-desc text-lg" style="flex: 1; font-size:1em;">Maintain at least 3 feet of distance from the device.</div>
+        <div></div></div></div></div>
+
+        <div class="container mx-auto mt-5 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="stat bg-primary p-8 shadow-lg rounded-lg" style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="stat-desc text-lg" style="flex: 1; font-size:1em;">Flex your core.</div>
+           <div></div>
+
+
+{% endblock %}

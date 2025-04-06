@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <!-- Welcome Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4 gradient-text">Welcome to Your Fitness Dashboard</h1>
+        <p class="text-lg text-base-content/70">Track your progress, start workouts, and achieve your fitness goals</p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="stat bg-primary text-primary-content rounded-box shadow-lg">
+            <div class="stat-figure text-primary-content">
+                <i class="fas fa-fire-alt text-3xl"></i>
+            </div>
+            <div class="stat-title text-primary-content/80">Workout Efficiency</div>
+            <div class="stat-value">{{ efficiency }}%</div>
+            <div class="stat-desc text-primary-content/60">Overall performance</div>
+        </div>
+
+        <div class="stat bg-secondary text-secondary-content rounded-box shadow-lg">
+            <div class="stat-figure text-secondary-content">
+                <i class="fas fa-dumbbell text-3xl"></i>
+            </div>
+            <div class="stat-title text-secondary-content/80">Total Exercises</div>
+            <div class="stat-value">{{ total_exercises }}</div>
+            <div class="stat-desc text-secondary-content/60">Completed workouts</div>
+        </div>
+
+        <div class="stat bg-accent text-accent-content rounded-box shadow-lg">
+            <div class="stat-figure text-accent-content">
+                <i class="fas fa-bolt text-3xl"></i>
+            </div>
+            <div class="stat-title text-accent-content/80">Weekly Progress</div>
+            <div class="stat-value">{{ exercises_this_week }}/{{ ex_goal }}</div>
+            <div class="stat-desc text-accent-content/60">Exercises this week</div>
+        </div>
+
+        <div class="stat bg-neutral text-neutral-content rounded-box shadow-lg">
+            <div class="stat-figure text-neutral-content">
+                <i class="fas fa-trophy text-3xl"></i>
+            </div>
+            <div class="stat-title text-neutral-content/80">Workout Streak</div>
+            <div class="stat-value">{{ streak }} days</div>
+            <div class="stat-desc text-neutral-content/60">Keep it up!</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Start Workout Card -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">
+                    <i class="fas fa-play-circle text-primary mr-2"></i>
+                    Start Workout
+                </h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="{{ url_for('start', exercise='shoulder_press') }}" class="btn btn-primary">
+                        <i class="fas fa-dumbbell mr-2"></i>
+                        Shoulder Press
+                    </a>
+                    <a href="{{ url_for('start', exercise='dumbbell_curls') }}" class="btn btn-primary">
+                        <i class="fas fa-dumbbell mr-2"></i>
+                        Bicep Curls
+                    </a>
+                    <a href="{{ url_for('start', exercise='barbell_squats') }}" class="btn btn-primary">
+                        <i class="fas fa-dumbbell mr-2"></i>
+                        Squats
+                    </a>
+                    <a href="{{ url_for('start', exercise='deadlift') }}" class="btn btn-primary">
+                        <i class="fas fa-dumbbell mr-2"></i>
+                        Deadlift
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Card -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">
+                    <i class="fas fa-lightbulb text-warning mr-2"></i>
+                    Recommendations
+                </h2>
+                <div class="space-y-4">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Your most performed exercise is {{ selected_exercise_name }}</span>
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="fas fa-random"></i>
+                        <span>Try this alternative: {{ alternate_message }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <i class="fas fa-calendar-check text-success mr-2"></i>
+                    Monthly Activity
+                </h3>
+                <div class="stat">
+                    <div class="stat-title">Active Days</div>
+                    <div class="stat-value">{{ workout_days }}</div>
+                    <div class="stat-desc">Last 30 days</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-line text-info mr-2"></i>
+                    Total Reps
+                </h3>
+                <div class="stat">
+                    <div class="stat-title">Lifetime Reps</div>
+                    <div class="stat-value">{{ total_reps }}</div>
+                    <div class="stat-desc">Keep pushing!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <i class="fas fa-tasks text-warning mr-2"></i>
+                    Weekly Goal
+                </h3>
+                <div class="stat">
+                    <div class="stat-title">Remaining</div>
+                    <div class="stat-value">{{ ex_goal }}</div>
+                    <div class="stat-desc">exercises this week</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto bg-base-100 rounded-lg shadow-xl overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Left side - Login -->
+                <div class="p-8 bg-gradient-to-br from-primary to-secondary text-primary-content">
+                    <h2 class="text-3xl font-bold mb-6">Welcome Back!</h2>
+                    <p class="mb-8">Log in to continue your fitness journey</p>
+                    <form method="POST" class="space-y-4">
+                        {{ login_form.hidden_tag() }}
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-primary-content">Username</span>
+                            </label>
+                            {{ login_form.username(class="input input-bordered w-full bg-white/10 text-primary-content placeholder-primary-content/70", placeholder="Enter your username") }}
+    </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-primary-content">Password</span>
+                            </label>
+                            {{ login_form.password(class="input input-bordered w-full bg-white/10 text-primary-content placeholder-primary-content/70", placeholder="Enter your password") }}
+            </div>
+                        <div class="form-control mt-6">
+                            <button type="submit" name="login_submit" class="btn btn-outline btn-primary bg-white/10 hover:bg-white/20 text-primary-content border-primary-content">
+                                Login
+                                <i class="fas fa-sign-in-alt ml-2"></i>
+                            </button>
+        </div>
+                    </form>
+            </div>
+
+                <!-- Right side - Register -->
+                <div class="p-8 bg-base-100">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Create Account</h2>
+                    <p class="mb-8 text-base-content/80">Join our community and start tracking your fitness progress</p>
+                    <form method="POST" class="space-y-4">
+                        {{ registration_form.hidden_tag() }}
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Username</span>
+                            </label>
+                            {{ registration_form.username(class="input input-bordered w-full", placeholder="Choose a username") }}
+        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            {{ registration_form.email(class="input input-bordered w-full", placeholder="Enter your email") }}
+            </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Password</span>
+                            </label>
+                            {{ registration_form.password(class="input input-bordered w-full", placeholder="Create a password") }}
+        </div>
+                        <div class="form-control mt-6">
+                            <button type="submit" name="register_submit" class="btn btn-primary w-full">
+                                Register
+                                <i class="fas fa-user-plus ml-2"></i>
+                            </button>
+        </div>
+      </form>
+              </div>
+            </div>
+                  </div>
+
+        <!-- Features Section -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <i class="fas fa-chart-line text-4xl text-primary mb-4"></i>
+                    <h3 class="card-title">Track Progress</h3>
+                    <p>Monitor your fitness journey with detailed analytics and insights</p>
+              </div>
+            </div>
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <i class="fas fa-dumbbell text-4xl text-primary mb-4"></i>
+                    <h3 class="card-title">Smart Workouts</h3>
+                    <p>Get real-time feedback on your exercise form and technique</p>
+              </div>
+            </div>
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <i class="fas fa-trophy text-4xl text-primary mb-4"></i>
+                    <h3 class="card-title">Compete & Achieve</h3>
+                    <p>Join the leaderboard and compete with other fitness enthusiasts</p>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+{% endblock %}

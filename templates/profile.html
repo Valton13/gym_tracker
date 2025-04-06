@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Profile Header -->
+        <div class="text-center mb-12">
+            <div class="avatar placeholder mb-4">
+                <div class="bg-neutral text-neutral-content rounded-full w-24">
+                    <span class="text-3xl">{{ username[0]|upper }}</span>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold gradient-text">{{ username }}</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Goals Settings -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-6">
+                        <i class="fas fa-bullseye text-primary mr-2"></i>
+                        Workout Goals
+                    </h2>
+                    
+                    <!-- Weekly Exercise Goal -->
+                    <div class="form-control mb-6">
+                        <label class="label">
+                            <span class="label-text text-lg">Weekly Exercise Goal</span>
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <form method="POST" class="join">
+                                <button type="submit" name="decrease_ex_goal" class="btn join-item">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="join-item px-6 py-2 bg-base-200 flex items-center justify-center min-w-[80px]">
+                                    {{ ex_goal }}
+                                </div>
+                                <button type="submit" name="increase_ex_goal" class="btn join-item">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Rep Goal -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Rep Goal per Exercise</span>
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <form method="POST" class="join">
+                                <button type="submit" name="decrease_rep_goal" class="btn join-item">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="join-item px-6 py-2 bg-base-200 flex items-center justify-center min-w-[80px]">
+                                    {{ rep_goal }}
+                                </div>
+                                <button type="submit" name="increase_rep_goal" class="btn join-item">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-6">
+                        <i class="fas fa-user-cog text-secondary mr-2"></i>
+                        Account Settings
+                    </h2>
+                    
+                    <!-- Change Password -->
+                    <form method="POST" class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Change Password</span>
+                        </label>
+                        <input type="password" name="new_password" placeholder="Enter new password" class="input input-bordered mb-4" required />
+                        <button type="submit" name="change_password" class="btn btn-primary">
+                            <i class="fas fa-key mr-2"></i>
+                            Update Password
+                        </button>
+                    </form>
+
+                    <!-- Delete Account -->
+                    <div class="mt-8">
+                        <label class="label">
+                            <span class="label-text text-lg text-error">Danger Zone</span>
+                        </label>
+                        <form method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+                            <button type="submit" name="delete_account" class="btn btn-error w-full">
+                                <i class="fas fa-trash-alt mr-2"></i>
+                                Delete Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
