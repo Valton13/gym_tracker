@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule - FitTrack Pro{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Weekly Schedule</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Monday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Monday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Squats</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 12 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Push-ups</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 10 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Tuesday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Bicep Curls</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 12 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Shoulder Press</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 10 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Wednesday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Squats</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">4 sets × 12 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Push-ups</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">4 sets × 10 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Thursday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Thursday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Shoulder Press</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">4 sets × 10 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Bicep Curls</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 12 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Friday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Friday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Squats</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">4 sets × 15 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Push-ups</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 12 reps</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Saturday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Saturday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Full Body Circuit</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 rounds × 30s each</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+
+        <!-- Sunday -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Sunday</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Rest Day</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">Recovery</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+                <li class="flex items-center justify-between">
+                    <div class="exercise-content flex-1">
+                        <span class="exercise-name block text-gray-800" contenteditable="true">Light Stretching</span>
+                        <span class="exercise-details block text-sm text-gray-600" contenteditable="true">15-20 minutes</span>
+                    </div>
+                    <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                </li>
+            </ul>
+            <button class="add-exercise-btn mt-4 w-full py-2 text-primary-600 hover:text-primary-700 border border-primary-600 rounded-md" onclick="addExercise(this)">+ Add Exercise</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleEdit(button) {
+        const exerciseContent = button.previousElementSibling;
+        const nameSpan = exerciseContent.querySelector('.exercise-name');
+        const detailsSpan = exerciseContent.querySelector('.exercise-details');
+        
+        if (nameSpan.contentEditable === 'true') {
+            nameSpan.contentEditable = 'false';
+            detailsSpan.contentEditable = 'false';
+            button.textContent = 'Edit';
+            saveSchedule();
+        } else {
+            nameSpan.contentEditable = 'true';
+            detailsSpan.contentEditable = 'true';
+            button.textContent = 'Save';
+            nameSpan.focus();
+        }
+    }
+
+    function addExercise(button) {
+        const ul = button.previousElementSibling;
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between';
+        li.innerHTML = `
+            <div class="exercise-content flex-1">
+                <span class="exercise-name block text-gray-800" contenteditable="true">New Exercise</span>
+                <span class="exercise-details block text-sm text-gray-600" contenteditable="true">3 sets × 10 reps</span>
+            </div>
+            <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+        `;
+        ul.appendChild(li);
+        saveSchedule();
+    }
+
+    function saveSchedule() {
+        const schedule = {};
+        document.querySelectorAll('.schedule-day').forEach(day => {
+            const dayName = day.querySelector('h3').textContent;
+            const exercises = [];
+            day.querySelectorAll('li').forEach(li => {
+                const name = li.querySelector('.exercise-name').textContent;
+                const details = li.querySelector('.exercise-details').textContent;
+                exercises.push({ name, details });
+            });
+            schedule[dayName] = exercises;
+        });
+        localStorage.setItem('workoutSchedule', JSON.stringify(schedule));
+    }
+
+    // Load saved schedule
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedSchedule = localStorage.getItem('workoutSchedule');
+        if (savedSchedule) {
+            const schedule = JSON.parse(savedSchedule);
+            Object.entries(schedule).forEach(([day, exercises]) => {
+                const dayElement = Array.from(document.querySelectorAll('.schedule-day'))
+                    .find(el => el.querySelector('h3').textContent === day);
+                if (dayElement) {
+                    const ul = dayElement.querySelector('ul');
+                    ul.innerHTML = '';
+                    exercises.forEach(exercise => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center justify-between';
+                        li.innerHTML = `
+                            <div class="exercise-content flex-1">
+                                <span class="exercise-name block text-gray-800" contenteditable="true">${exercise.name}</span>
+                                <span class="exercise-details block text-sm text-gray-600" contenteditable="true">${exercise.details}</span>
+                            </div>
+                            <button class="edit-btn ml-2 text-primary-600 hover:text-primary-700" onclick="toggleEdit(this)">Edit</button>
+                        `;
+                        ul.appendChild(li);
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %} 

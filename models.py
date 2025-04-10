@@ -61,3 +61,18 @@ class ExerciseUpload(db.Model):
     # Relationship with User model
     user = db.relationship('User', backref=db.backref('exercise_uploads', lazy=True))
 
+
+class ScheduledWorkout(db.Model):
+    __tablename__ = 'scheduled_workouts'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    exercise_type = db.Column(db.String(50), nullable=False)
+    workout_date = db.Column(db.Date, nullable=False)
+    workout_time = db.Column(db.Time, nullable=False)
+    notes = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    
+    # Relationship with User model
+    user = db.relationship('User', backref=db.backref('scheduled_workouts', lazy=True))
+

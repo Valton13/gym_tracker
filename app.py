@@ -2,7 +2,7 @@ from flask import Flask, flash, render_template, redirect, request, url_for, jso
 from forms import LoginForm, SearchForm, RegistrationForm
 from flask_migrate import Migrate
 from config import Config
-from models import User, db, bcrypt, Exercises, UserExercise, ExerciseUpload
+from models import User, db, bcrypt, Exercises, UserExercise, ExerciseUpload, ScheduledWorkout
 from shoulder_press import gen_frames as gen_frames_shoulder_press
 from bicep_curls import gen_frames as gen_frames_bicep_curls
 from barbell_squats import gen_frames as gen_frames_barbell_squats
@@ -346,8 +346,10 @@ def gen_frames(exercise, user_id, rep_goal):
 
 
 # Flask routes for user authentication
-@app.route('/')
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
+def index():
+    return redirect(url_for('login'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
@@ -364,25 +366,27 @@ def login():
                 else:
                     flash('Invalid username or password.', 'danger')
             else:
-                flash('Login failed. Please check your inputs.', 'danger')
-
+                for field, errors in login_form.errors.items():
+                    for error in errors:
+                        flash(f'{field.title()}: {error}', 'danger')
 
         elif 'register_submit' in request.form:
             if registration_form.validate_on_submit():
-                user = User.query.filter_by(username=registration_form.username.data).first()
-                if user is None:
-                    new_user = User(username=registration_form.username.data, email=registration_form.email.data)
-                    new_user.set_password(registration_form.password.data)
-                    db.session.add(new_user)
-                    db.session.commit()
-
-                    flash('Registration successful! You can now log in.', 'success')
-                    session['user_id'] = new_user.id
-                    return redirect(url_for('mainboard'))
-                else:
-                    flash('Username already exists. Please choose a different username.', 'danger')
+                # Create new user
+                new_user = User(
+                    username=registration_form.username.data,
+                    email=registration_form.email.data
+                )
+                new_user.set_password(registration_form.password.data)
+                db.session.add(new_user)
+                db.session.commit()
+                
+                flash('Registration successful! You can now log in.', 'success')
+                return render_template('enter.html', login_form=login_form, registration_form=registration_form)
             else:
-                flash('Registration failed. Please choose a different username.', 'danger')
+                for field, errors in registration_form.errors.items():
+                    for error in errors:
+                        flash(f'{field.title()}: {error}', 'danger')
 
     return render_template('enter.html', login_form=login_form, registration_form=registration_form)
 
@@ -776,6 +780,51 @@ def delete_analyzed_video(upload_id):
         flash('Error deleting video', 'error')
     
     return redirect(url_for('upload_exercise'))
+
+@app.route('/schedule')
+@login_required
+def schedule():
+    return render_template('schedule.html')
+
+@app.route('/add-workout', methods=['POST'])
+@login_required
+def add_workout():
+    data = request.json
+    workout_date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+    workout_time = datetime.strptime(data['time'], '%H:%M').time()
+    
+    new_workout = ScheduledWorkout(
+        user_id=session['user_id'],
+        exercise_type=data['exercise'],
+        workout_date=workout_date,
+        workout_time=workout_time,
+        notes=data.get('notes', '')
+    )
+    
+    db.session.add(new_workout)
+    db.session.commit()
+    
+    return jsonify({
+        'id': new_workout.id,
+        'date': workout_date.strftime('%Y-%m-%d'),
+        'time': workout_time.strftime('%H:%M'),
+        'exercise': new_workout.exercise_type,
+        'notes': new_workout.notes
+    })
+
+@app.route('/delete-workout/<int:workout_id>', methods=['POST'])
+@login_required
+def delete_workout(workout_id):
+    workout = ScheduledWorkout.query.get_or_404(workout_id)
+    
+    # Ensure the workout belongs to the current user
+    if workout.user_id != session['user_id']:
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    db.session.delete(workout)
+    db.session.commit()
+    
+    return jsonify({'success': True})
 
 if __name__ == "__main__":
     app.run()

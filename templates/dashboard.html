@@ -4,59 +4,77 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold mb-4 gradient-text">Welcome, {{ user.name }}!</h1>
-            <p class="text-lg text-base-content/70">Track your fitness journey and monitor your progress</p>
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Welcome, {{ current_user.username }}!</h1>
+        <div class="flex space-x-4">
+            <a href="{{ url_for('upload_exercise') }}" class="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                Upload Exercise
+            </a>
+            <a href="{{ url_for('schedule') }}" class="bg-secondary-600 text-white px-4 py-2 rounded-md hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2">
+                View Schedule
+            </a>
         </div>
+    </div>
 
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">
-                        <i class="fas fa-dumbbell text-primary mr-2"></i>
-                        Workouts Completed
-                    </h2>
-                    <p class="text-4xl font-bold">{{ stats.workouts_completed }}</p>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">
-                        <i class="fas fa-fire text-secondary mr-2"></i>
-                        Calories Burned
-                    </h2>
-                    <p class="text-4xl font-bold">{{ stats.calories_burned }}</p>
-                </div>
-            </div>
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">
-                        <i class="fas fa-clock text-accent mr-2"></i>
-                        Total Time
-                    </h2>
-                    <p class="text-4xl font-bold">{{ stats.total_time }} min</p>
-                </div>
-            </div>
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Workouts</h3>
+            <p class="text-3xl font-bold text-primary-600">{{ total_workouts }}</p>
         </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">This Week</h3>
+            <p class="text-3xl font-bold text-secondary-600">{{ weekly_workouts }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Streak</h3>
+            <p class="text-3xl font-bold text-success-600">{{ streak }} days</p>
+        </div>
+    </div>
 
-        <!-- Exercise Performance Section -->
-        <div class="card bg-base-100 shadow-xl mb-12">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-6">
-                    <i class="fas fa-running text-primary mr-2"></i>
-                    Exercise Performance
-                </h2>
-                
-                <!-- Exercise Selection -->
-                <div class="form-control mb-6">
-                    <label class="label">
-                        <span class="label-text text-lg font-semibold">Select Exercise</span>
-                    </label>
-                    <select id="exercise-select" class="select select-bordered w-full">
-                        <option value="" disabled selected>Choose an exercise</option>
+    <!-- Today's Schedule -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Today's Schedule</h2>
+            <span class="text-lg font-medium text-gray-600">{{ current_day }}</span>
+        </div>
+        <div class="space-y-4">
+            {% if today_workouts %}
+                {% for workout in today_workouts %}
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">{{ workout.exercise_type }}</h3>
+                        <p class="text-sm text-gray-600">{{ workout.details }}</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm font-medium text-primary-600">{{ workout.time }}</span>
+                        <button class="text-primary-600 hover:text-primary-700" onclick="startExercise('{{ workout.exercise_type }}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-8">
+                    <p class="text-gray-600">No workouts scheduled for today.</p>
+                    <a href="{{ url_for('schedule') }}" class="inline-block mt-4 text-primary-600 hover:text-primary-700">Schedule a workout →</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Live Workout Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-6">Live Workout</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <label for="exercise_type" class="block text-sm font-medium text-gray-700 mb-2">Select Exercise</label>
+                    <select id="exercise_type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="">Choose an exercise</option>
                         <option value="squat">Squat</option>
                         <option value="deadlift">Deadlift</option>
                         <option value="pushup">Push-up</option>
@@ -64,261 +82,158 @@
                         <option value="shoulder_press">Shoulder Press</option>
                         <option value="bicep_curl">Bicep Curl</option>
                         <option value="plank">Plank</option>
-        </select>
+                    </select>
                 </div>
-
-                <!-- Video Feed -->
-                <div class="relative video-container mb-6">
-                    <video id="exercise-video" class="w-full rounded-lg" autoplay muted playsinline></video>
-                    <div id="feedback-overlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-white hidden">
-                        <div class="feedback-content text-xl font-semibold text-center px-4 py-2 bg-black bg-opacity-50 rounded-lg shadow-lg transform -translate-y-8">
-                            <div class="feedback-text"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Exercise Controls -->
-                <div class="flex justify-center space-x-4">
-                    <button id="start-exercise" class="btn btn-primary">
-                        <i class="fas fa-play mr-2"></i>
+                <div class="flex space-x-4">
+                    <button id="startBtn" class="bg-primary-600 text-white px-6 py-2 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                         Start Exercise
                     </button>
-                    <button id="stop-exercise" class="btn btn-error" disabled>
-                        <i class="fas fa-stop mr-2"></i>
-                        Stop Exercise
+                    <button id="stopBtn" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" disabled>
+                        Stop
                     </button>
                 </div>
-
-                <!-- Exercise Instructions -->
-                <div class="prose mt-6">
-                    <h3 class="text-lg font-semibold mb-2">Instructions:</h3>
-                    <div id="exercise-instructions" class="list-decimal list-inside space-y-2">
-                        <!-- Instructions will be populated by JavaScript -->
-                    </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="text-lg font-semibold mb-2">Exercise Tips</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                        <li>Keep your form correct throughout the exercise</li>
+                        <li>Breathe steadily and rhythmically</li>
+                        <li>Stay hydrated during your workout</li>
+                        <li>Listen to your body and rest when needed</li>
+                    </ul>
                 </div>
             </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-6">
-                    <i class="fas fa-history text-primary mr-2"></i>
-                    Recent Activity
-                </h2>
-                <div class="overflow-x-auto">
-                    <table class="table w-full">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Exercise</th>
-                                <th>Duration</th>
-                                <th>Calories</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for activity in recent_activity %}
-                            <tr>
-                                <td>{{ activity.date.strftime('%Y-%m-%d %H:%M') }}</td>
-                                <td>{{ activity.exercise }}</td>
-                                <td>{{ activity.duration }} min</td>
-                                <td>{{ activity.calories }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <div class="relative">
+                <div class="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
+                    <video id="videoFeed" class="w-full h-full object-cover" autoplay muted></video>
+                    <div id="feedbackOverlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hidden">
+                        <div class="bg-white bg-opacity-90 p-4 rounded-lg text-center max-w-md">
+                            <p id="feedbackText" class="text-xl font-semibold text-gray-800"></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Recent Workouts -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6">Recent Workouts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for workout in recent_workouts %}
+            <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-semibold text-gray-800">{{ workout.exercise_type }}</h3>
+                    <span class="text-sm text-gray-500">{{ workout.date }}</span>
+                </div>
+                <p class="text-gray-600 mb-2">{{ workout.details }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-medium text-primary-600">{{ workout.duration }} minutes</span>
+                    <a href="{{ url_for('view_workout', id=workout.id) }}" class="text-primary-600 hover:text-primary-700">View Details →</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
-<style>
-    .video-container {
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    }
-
-    .video-container video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .feedback-overlay {
-        position: absolute;
-        z-index: 9999;
-    }
-
-    .feedback-content {
-        font-size: 1.5rem;
-        padding: 1rem 2rem;
-    }
-</style>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const exerciseSelect = document.getElementById('exercise-select');
-    const exerciseVideo = document.getElementById('exercise-video');
-    const feedbackOverlay = document.getElementById('feedback-overlay');
-    const feedbackText = feedbackOverlay.querySelector('.feedback-text');
-    const startButton = document.getElementById('start-exercise');
-    const stopButton = document.getElementById('stop-exercise');
-    const exerciseInstructions = document.getElementById('exercise-instructions');
-
-    // Exercise instructions and feedback messages
-    const exerciseData = {
-        squat: {
-            instructions: [
-                "Stand with feet shoulder-width apart",
-                "Keep back straight and chest up",
-                "Lower body until thighs are parallel to ground",
-                "Push through heels to return to starting position"
-            ],
-            feedback: [
-                "Keep your back straight",
-                "Knees aligned with toes",
-                "Lower until thighs are parallel",
-                "Push through heels"
-            ]
-        },
-        deadlift: {
-            instructions: [
-                "Stand with feet hip-width apart",
-                "Bend at hips and knees to grip barbell",
-                "Keep back straight and chest up",
-                "Lift bar by extending hips and knees",
-                "Lower bar with control"
-            ],
-            feedback: [
-                "Maintain neutral spine",
-                "Keep bar close to body",
-                "Engage core",
-                "Drive through heels"
-            ]
-        },
-        pushup: {
-            instructions: [
-                "Get into plank position",
-                "Keep body straight",
-                "Lower chest to ground",
-                "Push back up"
-            ],
-            feedback: [
-                "Elbows close to body",
-                "Keep body straight",
-                "Lower chest to ground",
-                "Push through chest"
-            ]
-        },
-        shoulder_press: {
-            instructions: [
-                "Stand with feet shoulder-width apart",
-                "Hold weights at shoulder height",
-                "Press overhead",
-                "Lower with control"
-            ],
-            feedback: [
-                "Keep core engaged",
-                "Wrists straight",
-                "Press overhead",
-                "Control descent"
-            ]
-        },
-        bicep_curl: {
-            instructions: [
-                "Stand with feet shoulder-width apart",
-                "Hold weights with palms facing forward",
-                "Curl weights up",
-                "Lower with control"
-            ],
-            feedback: [
-                "Keep elbows stationary",
-                "Full range of motion",
-                "Control weight",
-                "Squeeze at top"
-            ]
-        },
-        plank: {
-            instructions: [
-                "Get into push-up position",
-                "Lower forearms to ground",
-                "Keep body straight",
-                "Hold position"
-            ],
-            feedback: [
-                "Keep body straight",
-                "Engage core",
-                "Hold position",
-                "Maintain form"
-            ]
-        }
-    };
-
+    // Live workout functionality
+    const videoFeed = document.getElementById('videoFeed');
+    const feedbackOverlay = document.getElementById('feedbackOverlay');
+    const feedbackText = document.getElementById('feedbackText');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const exerciseSelect = document.getElementById('exercise_type');
+    
     let stream = null;
     let feedbackInterval = null;
-    let currentExercise = null;
 
-    // Update instructions when exercise is selected
-    exerciseSelect.addEventListener('change', function() {
-        const exercise = this.value;
-        if (exercise && exerciseData[exercise]) {
-            currentExercise = exercise;
-            exerciseInstructions.innerHTML = exerciseData[exercise].instructions
-                .map(instruction => `<li>${instruction}</li>`)
-                .join('');
-            startButton.disabled = false;
-        } else {
-            currentExercise = null;
-            exerciseInstructions.innerHTML = '';
-            startButton.disabled = true;
+    const feedbackMessages = {
+        squat: [
+            "Keep your back straight",
+            "Knees aligned with toes",
+            "Lower until thighs are parallel",
+            "Push through your heels"
+        ],
+        deadlift: [
+            "Maintain neutral spine",
+            "Keep bar close to body",
+            "Engage your core",
+            "Push through your heels"
+        ],
+        pushup: [
+            "Elbows close to body",
+            "Keep body straight",
+            "Lower chest to ground",
+            "Push back up with control"
+        ],
+        shoulder_press: [
+            "Keep core engaged",
+            "Wrists straight",
+            "Press overhead with control",
+            "Lower weights with control"
+        ],
+        bicep_curl: [
+            "Keep elbows stationary",
+            "Full range of motion",
+            "Control the weight",
+            "Squeeze at the top"
+        ],
+        plank: [
+            "Keep body straight",
+            "Engage core",
+            "Don't let hips sag",
+            "Breathe steadily"
+        ]
+    };
+
+    // Function to start exercise from today's schedule
+    function startExercise(exerciseType) {
+        exerciseSelect.value = exerciseType.toLowerCase().replace(' ', '_');
+        startBtn.click();
+    }
+
+    startBtn.addEventListener('click', async () => {
+        if (!exerciseSelect.value) {
+            alert('Please select an exercise first');
+            return;
         }
-    });
 
-    // Start exercise
-    startButton.addEventListener('click', async function() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            exerciseVideo.srcObject = stream;
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            feedbackOverlay.classList.remove('hidden');
+            videoFeed.srcObject = stream;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            exerciseSelect.disabled = true;
 
-            // Start feedback cycle
-            let currentFeedbackIndex = 0;
+            // Show feedback overlay
+            feedbackOverlay.classList.remove('hidden');
+            
+            // Start feedback rotation
+            let messageIndex = 0;
             feedbackInterval = setInterval(() => {
-                if (currentExercise && exerciseData[currentExercise]) {
-                    const feedback = exerciseData[currentExercise].feedback;
-                    feedbackText.textContent = feedback[currentFeedbackIndex];
-                    currentFeedbackIndex = (currentFeedbackIndex + 1) % feedback.length;
-                }
-            }, 3000); // Change feedback every 3 seconds
+                const messages = feedbackMessages[exerciseSelect.value];
+                feedbackText.textContent = messages[messageIndex];
+                messageIndex = (messageIndex + 1) % messages.length;
+            }, 3000);
         } catch (err) {
             console.error('Error accessing camera:', err);
-            alert('Error accessing camera. Please make sure you have granted camera permissions.');
+            alert('Unable to access camera. Please ensure you have granted camera permissions.');
         }
     });
 
-    // Stop exercise
-    stopButton.addEventListener('click', function() {
+    stopBtn.addEventListener('click', () => {
         if (stream) {
             stream.getTracks().forEach(track => track.stop());
-            exerciseVideo.srcObject = null;
-            stream = null;
+            videoFeed.srcObject = null;
         }
         if (feedbackInterval) {
             clearInterval(feedbackInterval);
-            feedbackInterval = null;
         }
         feedbackOverlay.classList.add('hidden');
-        startButton.disabled = false;
-        stopButton.disabled = true;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        exerciseSelect.disabled = false;
     });
-});
 </script>
 {% endblock %}

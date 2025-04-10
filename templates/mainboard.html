@@ -28,7 +28,7 @@
             <div class="stat-title text-secondary-content/80">Total Exercises</div>
             <div class="stat-value">{{ total_exercises }}</div>
             <div class="stat-desc text-secondary-content/60">Completed workouts</div>
-        </div>
+    </div>
 
         <div class="stat bg-accent text-accent-content rounded-box shadow-lg">
             <div class="stat-figure text-accent-content">
@@ -52,53 +52,85 @@
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <!-- Start Workout Card -->
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
+        <div class="card bg-gradient-to-br from-primary to-primary-focus shadow-xl">
+            <div class="card-body text-primary-content">
                 <h2 class="card-title text-2xl mb-4">
-                    <i class="fas fa-play-circle text-primary mr-2"></i>
-                    Start Workout
+                    <i class="fas fa-play-circle mr-2"></i>
+                    Start Your Workout
                 </h2>
+                <p class="mb-4">Choose an exercise to begin your workout session</p>
                 <div class="grid grid-cols-2 gap-4">
-                    <a href="{{ url_for('start', exercise='shoulder_press') }}" class="btn btn-primary">
+                    <a href="{{ url_for('start', exercise='shoulder_press') }}" class="btn btn-secondary hover:btn-accent transition-all">
                         <i class="fas fa-dumbbell mr-2"></i>
                         Shoulder Press
                     </a>
-                    <a href="{{ url_for('start', exercise='dumbbell_curls') }}" class="btn btn-primary">
+                    <a href="{{ url_for('start', exercise='dumbbell_curls') }}" class="btn btn-secondary hover:btn-accent transition-all">
                         <i class="fas fa-dumbbell mr-2"></i>
                         Bicep Curls
                     </a>
-                    <a href="{{ url_for('start', exercise='barbell_squats') }}" class="btn btn-primary">
+                    <a href="{{ url_for('start', exercise='barbell_squats') }}" class="btn btn-secondary hover:btn-accent transition-all">
                         <i class="fas fa-dumbbell mr-2"></i>
                         Squats
                     </a>
-                    <a href="{{ url_for('start', exercise='deadlift') }}" class="btn btn-primary">
+                    <a href="{{ url_for('start', exercise='deadlift') }}" class="btn btn-secondary hover:btn-accent transition-all">
                         <i class="fas fa-dumbbell mr-2"></i>
                         Deadlift
                     </a>
                 </div>
+                <div class="mt-4 text-sm opacity-80">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Select an exercise to start your workout with real-time form feedback
+                </div>
             </div>
         </div>
 
-        <!-- Recommendations Card -->
+        <!-- Schedule Card -->
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
                 <h2 class="card-title text-2xl mb-4">
-                    <i class="fas fa-lightbulb text-warning mr-2"></i>
-                    Recommendations
+                    <i class="fas fa-calendar-alt text-secondary mr-2"></i>
+                    Workout Schedule
                 </h2>
                 <div class="space-y-4">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Your most performed exercise is {{ selected_exercise_name }}</span>
-                    </div>
-                    <div class="alert alert-success">
-                        <i class="fas fa-random"></i>
-                        <span>Try this alternative: {{ alternate_message }}</span>
-                    </div>
+                    <button onclick="document.getElementById('schedule_modal').showModal()" class="btn btn-secondary w-full">
+                        <i class="fas fa-calendar-plus mr-2"></i>
+                        View/Edit Schedule
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Schedule Modal -->
+    <dialog id="schedule_modal" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg mb-4">Your Workout Schedule</h3>
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Exercise</th>
+                            <th>Details</th>
+                            <th>Sets</th>
+                            <th>Reps</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody">
+                        <!-- Schedule items will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-action">
+                <a href="{{ url_for('schedule') }}" class="btn btn-primary">Manage Schedule</a>
+                <button onclick="document.getElementById('schedule_modal').close()" class="btn">Close</button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
 
     <!-- Progress Overview -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -112,8 +144,8 @@
                     <div class="stat-title">Active Days</div>
                     <div class="stat-value">{{ workout_days }}</div>
                     <div class="stat-desc">Last 30 days</div>
-                </div>
-            </div>
+</div>
+        </div>
         </div>
 
         <div class="card bg-base-100 shadow-xl">
@@ -140,9 +172,136 @@
                     <div class="stat-title">Remaining</div>
                     <div class="stat-value">{{ ex_goal }}</div>
                     <div class="stat-desc">exercises this week</div>
-                </div>
+</div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Exercise details mapping
+    const exerciseDetails = {
+        'shoulder_press': {
+            name: 'Shoulder Press',
+            description: 'A compound exercise that targets the deltoids, triceps, and upper chest.',
+            tips: 'Keep your core engaged and maintain proper form by keeping your wrists straight.',
+            equipment: 'Dumbbells or Barbell',
+            difficulty: 'Intermediate'
+        },
+        'dumbbell_curls': {
+            name: 'Bicep Curls',
+            description: 'An isolation exercise that primarily targets the biceps brachii.',
+            tips: 'Keep your elbows stationary and focus on a full range of motion.',
+            equipment: 'Dumbbells',
+            difficulty: 'Beginner'
+        },
+        'barbell_squats': {
+            name: 'Squats',
+            description: 'A compound lower body exercise that targets quadriceps, hamstrings, and glutes.',
+            tips: 'Keep your back straight, knees aligned with toes, and push through your heels.',
+            equipment: 'Barbell',
+            difficulty: 'Intermediate'
+        },
+        'deadlift': {
+            name: 'Deadlift',
+            description: 'A compound exercise that targets the posterior chain including back, glutes, and hamstrings.',
+            tips: 'Maintain a neutral spine and keep the bar close to your body.',
+            equipment: 'Barbell',
+            difficulty: 'Advanced'
+        },
+        'push_up': {
+            name: 'Push-ups',
+            description: 'A bodyweight exercise that targets chest, shoulders, and triceps.',
+            tips: 'Maintain a straight body line and keep your elbows close to your body.',
+            equipment: 'None',
+            difficulty: 'Beginner to Intermediate'
+        },
+        'plank': {
+            name: 'Plank',
+            description: 'An isometric core exercise that targets the entire abdominal region.',
+            tips: 'Keep your body in a straight line and engage your core throughout.',
+            equipment: 'None',
+            difficulty: 'Beginner'
+        }
+    };
+
+    // Load schedule from the server
+    async function loadSchedule() {
+        try {
+            const response = await fetch("{{ url_for('get_schedule') }}");
+            const schedule = await response.json();
+            const tableBody = document.getElementById('scheduleTableBody');
+            tableBody.innerHTML = '';
+
+            if (schedule.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No schedule items found. Click "Manage Schedule" to add exercises.</td></tr>';
+                return;
+            }
+
+            schedule.forEach((item, index) => {
+                const exerciseInfo = exerciseDetails[item.exercise] || {
+                    name: item.exercise,
+                    description: 'Exercise details not available',
+                    tips: 'No specific tips available',
+                    equipment: 'Not specified',
+                    difficulty: 'Not specified'
+                };
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="font-medium">${item.day}</td>
+                    <td>
+                        <div class="font-semibold">${exerciseInfo.name}</div>
+                        <div class="text-xs opacity-70">${exerciseInfo.difficulty} • ${exerciseInfo.equipment}</div>
+                    </td>
+                    <td>
+                        <div class="text-sm">${exerciseInfo.description}</div>
+                        <div class="text-xs text-primary mt-1">
+                            <i class="fas fa-lightbulb mr-1"></i>${exerciseInfo.tips}
+                        </div>
+                    </td>
+                    <td>${item.sets}</td>
+                    <td>${item.reps}</td>
+                    <td>
+                        <a href="{{ url_for('schedule') }}?edit=${item.id}" class="btn btn-sm btn-info">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button onclick="deleteScheduleItem(${item.id})" class="btn btn-sm btn-error">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error loading schedule:', error);
+            const tableBody = document.getElementById('scheduleTableBody');
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Error loading schedule. Please try again.</td></tr>';
+        }
+    }
+
+    // Delete schedule item
+    async function deleteScheduleItem(id) {
+        if (confirm('Are you sure you want to delete this schedule item?')) {
+            try {
+                const response = await fetch(`{{ url_for('delete_schedule_item', item_id=0) }}`.replace('0', id), {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    loadSchedule();
+                } else {
+                    alert('Error deleting schedule item. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error deleting schedule item:', error);
+                alert('Error deleting schedule item. Please try again.');
+            }
+        }
+    }
+
+    // Load schedule when modal is opened
+    document.getElementById('schedule_modal').addEventListener('show', loadSchedule);
+</script>
 {% endblock %}

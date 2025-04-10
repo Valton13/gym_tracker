@@ -57,7 +57,13 @@
                                 <span class="label-text">Password</span>
                             </label>
                             {{ registration_form.password(class="input input-bordered w-full", placeholder="Create a password") }}
-        </div>
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Confirm Password</span>
+                            </label>
+                            {{ registration_form.password2(class="input input-bordered w-full", placeholder="Confirm your password") }}
+                        </div>
                         <div class="form-control mt-6">
                             <button type="submit" name="register_submit" class="btn btn-primary w-full">
                                 Register
